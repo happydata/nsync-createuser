@@ -1,4 +1,4 @@
-Nomie Sync User Creator
+Nomie 1.0 Sync User Creator
 =======================
 
 Node.js command line tool for creating and securing a [Nomie](https://nomie.io) Sync Account on a remote CouchDB server.

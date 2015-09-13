@@ -8,15 +8,14 @@ var prompt = require("prompt");
 *
 ******************************************************/
 var settings = {
-	host: 'https://sync.nomie.io', // couchdb url
-	username: 'brandon', // couchdb admin user login
-	password: 'gut666123456' //  couchdb admin user password
+	host: '', // couchdb url
+	username: '', // couchdb admin user login
+	password: '' //  couchdb admin user password
 };
 
 // Setup CouchDB
 var CouchDB = require("couchdb-api");
-var couchdb = CouchDB.srv(settings.host);
-couchdb.auth = [settings.username, settings.password];
+var couchdb;
 
 /*****************************************************
 * Actions - currently only one. create-user
@@ -24,17 +23,33 @@ couchdb.auth = [settings.username, settings.password];
 ******************************************************/
 var actions = {
 	'create-user': function () {
-			if(!isReady()) {
-				console.log("### ERROR ## Please provide a host, username and password in index.js");
-				return true;
-			}
-			prompt.get([{
+			// if(!isReady()) {
+			// 	console.log("### ERROR ## Please provide a host, username and password in index.js");
+			// 	return true;
+			// }
+			prompt.get([
+			{
+				name : 'couchurl',
+				description : 'Couch URL https://url.com:5984',
+				required : true
+			},
+			{
+				name : 'adminuser',
+				description : 'Admin Username',
+				required : true
+			},
+			{
+				name: 'adminpass',
+				description : 'Admin Password',
+				hidden: true,
+			},
+			{
 				name: 'username',
-				description : 'Create a Username',
+				description : 'New Users Username',
 				required: true
 			}, {
 				name: 'password',
-				description : 'Create a Password',
+				description : 'New Users Password',
 				hidden: true,
 				conform: function (value) {
 					return true;
@@ -53,6 +68,7 @@ var actions = {
 				* Create the users with the information
 				* provided by Prompt
 				******************************************************/
+
 				if(result.password != result.password2) {
 					console.log("### ERROR ## Passwords do not match");
 					setTimeout(function() {
@@ -61,11 +77,15 @@ var actions = {
 					return false;
 				}
 
+				couchdb = CouchDB.srv(result.couchurl);
+				couchdb.auth = [result.adminuser, result.adminpass];
+
 				createUser(result.username, result.password, function (err, data) {
 					if (err) {
 						console.log("### ERROR : User Creation Failed", err);
 					} else {
 						console.log("### User Created Successfully");
+
 						createDatabase(result.username + '_trackers', result.username, function (err, data) {
 							if (!err) {
 								createDatabase(result.username + '_meta', result.username, function (err, data) {
@@ -92,8 +112,10 @@ var actions = {
 					}
 				});
 			});
-		} // End Create User
+		}, // End Create User
+		'add-cors' : function() {
 
+		}
 };
 
 var isReady = function() {

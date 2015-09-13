@@ -13,20 +13,8 @@ cd nsync-createuser
 npm install
 ```
 
-##Setup
-
-Add your CouchDB credentials to the settings object in `index.js`
-
-```
-var settings = {
-	host: 'https://testy.iriscouch.com:43212', // couchdb url
-	username: 'adminUsername', // couchdb admin user login
-	password: 'adminPassword' //  couchdb admin user password
-};
-```
-
 ##Running
 
-`node index.js`
+`node nomie-create-user.js`
 
 ![](http://snap.icorbin.com/Screen-Shot-2015-07-10-22-31-23/Screen-Shot-2015-07-10-22-31-23.png)

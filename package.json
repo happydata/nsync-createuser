@@ -1,5 +1,5 @@
 {
-  "name": "nomie-node",
+  "name": "nomie-create-sync-user",
   "version": "1.0.0",
   "description": "",
   "main": "nomie-create-user.js",
@@ -7,10 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "couchdb-api": "^1.2.2",
     "nano": "^6.0.2",
-    "prompt": "^0.2.14"
+    "prompt": "^0.2.14",
+    "url": "^0.11.0"
   }
 }

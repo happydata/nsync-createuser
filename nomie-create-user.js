@@ -2,6 +2,8 @@ console.log("#####################################################");
 console.log("########  LETS CREATE A NOMIE SYNC ACCOUNT!  ########");
 console.log("#####################################################");
 var prompt = require("prompt");
+var addCors = require("add-cors-to-couchdb");
+var url = require('url');
 
 /*****************************************************
 * Add the Host and your Admin Username and Password
@@ -21,6 +23,9 @@ var couchdb;
 * Actions - currently only one. create-user
 * actions['create-user'] will automatically be called for now.
 ******************************************************/
+// TODO: Make this script enable cors.
+// console.log(url.parse('https://nomietest2.iriscouch.com:6984'));
+
 var actions = {
 	'create-user': function () {
 			// if(!isReady()) {
@@ -35,21 +40,21 @@ var actions = {
 			},
 			{
 				name : 'adminuser',
-				description : 'Admin Username',
+				description : 'Administrator Username',
 				required : true
 			},
 			{
 				name: 'adminpass',
-				description : 'Admin Password',
+				description : 'Administrator Password',
 				hidden: true,
 			},
 			{
 				name: 'username',
-				description : 'New Users Username',
+				description : 'Create a Nomie Sync Username',
 				required: true
 			}, {
 				name: 'password',
-				description : 'New Users Password',
+				description : 'Create a Nomie Sync Password',
 				hidden: true,
 				conform: function (value) {
 					return true;
@@ -57,7 +62,7 @@ var actions = {
 			},
 		{
 			name: 'password2',
-			description : 'Repeat Password',
+			description : 'Confirm Password',
 			hidden: true,
 			conform: function (value) {
 				return true;
@@ -77,12 +82,22 @@ var actions = {
 					return false;
 				}
 
+				var urlparts = url.parse(result.couchurl);
+
+
+				// console.log("### User Created Successfully");
+
+				// addCors(result.couchurl, { username : result.adminuser, password: result.adminpass }, function(err, addCorsResult) {
+				// 	console.log("Enabled Cors on the CouchDB", err, addCorsResult);
+				// });
+
 				couchdb = CouchDB.srv(result.couchurl);
 				couchdb.auth = [result.adminuser, result.adminpass];
 
 				createUser(result.username, result.password, function (err, data) {
 					if (err) {
 						console.log("### ERROR : User Creation Failed", err);
+
 					} else {
 						console.log("### User Created Successfully");
 
@@ -95,12 +110,12 @@ var actions = {
 												console.log("### SUCCESS! User and their Databases have been created.");
 												return true;
 											} else {
-												console.log("### ERROR : Creating Notes Database Failed", err);
+												console.log("### ERROR : Creating Events Database Failed", err);
 												return true;
 											}
 										});
 									} else {
-										console.log("### ERROR : Creating Events Database Failed", err);
+										console.log("### ERROR : Creating Meta Database Failed", err);
 										return true;
 									}
 								});
@@ -156,12 +171,11 @@ var createDatabase = function (name, ownerUsername, callback) {
 
 /*****************************************************
 * Create a User in CouchDB
-*
 ******************************************************/
 var createUser = function (username, password, callback) {
 	couchdb.register(username, password, {
-		createdBy: 'nsync-createuser',
-		type: "user",
+		"createdBy": 'nsync-createuser',
+		"type": "user",
 		"roles": []
 	}, function (err, data) {
 		if(err) {
@@ -173,6 +187,5 @@ var createUser = function (username, password, callback) {
 
 /*****************************************************
 * Autofire
-*
 ******************************************************/
 actions['create-user']();

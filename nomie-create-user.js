@@ -24,14 +24,10 @@ var couchdb;
 * actions['create-user'] will automatically be called for now.
 ******************************************************/
 // TODO: Make this script enable cors.
-// console.log(url.parse('https://nomietest2.iriscouch.com:6984'));
 
 var actions = {
 	'create-user': function () {
-			// if(!isReady()) {
-			// 	console.log("### ERROR ## Please provide a host, username and password in index.js");
-			// 	return true;
-			// }
+
 			prompt.get([
 			{
 				name : 'couchurl',

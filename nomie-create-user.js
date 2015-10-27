@@ -84,13 +84,6 @@ var actions = {
 
 				var urlparts = url.parse(result.couchurl);
 
-
-				// console.log("### User Created Successfully");
-
-				// addCors(result.couchurl, { username : result.adminuser, password: result.adminpass }, function(err, addCorsResult) {
-				// 	console.log("Enabled Cors on the CouchDB", err, addCorsResult);
-				// });
-
 				couchdb = CouchDB.srv(result.couchurl);
 				couchdb.auth = [result.adminuser, result.adminpass];
 

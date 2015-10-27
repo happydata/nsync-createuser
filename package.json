@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "add-cors-to-couchdb": "0.0.4",
     "couchdb-api": "^1.2.2",
     "nano": "^6.0.2",
     "prompt": "^0.2.14",
